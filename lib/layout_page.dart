@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertest1/pluginUse.dart';
+import 'package:flutter_color_plugin/flutter_color_plugin.dart';
 
-import 'less_group_page.dart';
-import 'statefull_group_page.dart';
-
-void main() {
-  runApp(StateFullLessGroup());
-}
-
-class MyApp extends StatelessWidget {
+///Flutter布局开发
+class LayoutPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    TextStyle textStyle = TextStyle(fontSize: 20);
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter布局开发',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -28,9 +23,50 @@ class MyApp extends StatelessWidget {
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and
         // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text('Flutter布局开发'),
+          ),
+          body: Container(
+            decoration: BoxDecoration(color: Colors.white),
+            alignment: Alignment.center,
+            child: Column(children: <Widget>[
+              Text('I am Text', style: textStyle),
+              Icon(
+                Icons.android,
+                size: 50,
+                color: Colors.red,
+              ),
+              CloseButton(),
+              BackButton(),
+              Chip(
+                avatar: Icon(Icons.people),
+                label: Text('Flutter布局开发'),
+              ),
+              Divider(
+                height: 10, //容器高度
+                indent: 10, //左侧间距
+                color: Colors.orange,
+              ),
+              Card(
+                color: Colors.blue,
+                elevation: 5,
+                margin: EdgeInsets.all(10),
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    'I am Card',
+                    style: textStyle,
+                  ),
+                ),
+              ),
+              AlertDialog(
+                title: Text('测试'),
+                content: Text('测试弹框'),
+              )
+            ]),
+          )),
     );
   }
 }
@@ -103,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Text(
               'You have pushed the button this many times:',
+              style: TextStyle(color: ColorUtil.color('#a9ee00')),
             ),
             Text(
               '$_counter',
