@@ -1,158 +1,142 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_color_plugin/flutter_color_plugin.dart';
 
-///Flutter布局开发
-class LayoutPage extends StatelessWidget {
-  // This widget is the root of your application.
+///如何进行Flutter布局开发
+class LayoutPage extends StatefulWidget {
+  @override
+  _LayoutPage createState() => _LayoutPage();
+}
+
+class _LayoutPage extends State<LayoutPage> {
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = TextStyle(fontSize: 20);
     return MaterialApp(
-      title: 'Flutter布局开发',
+      title: '如何进行Flutter布局开发',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
       ),
       home: Scaffold(
           appBar: AppBar(
-            title: Text('Flutter布局开发'),
+            title: Text('如何进行Flutter布局开发'),
           ),
-          body: Container(
-            decoration: BoxDecoration(color: Colors.white),
-            alignment: Alignment.center,
-            child: Column(children: <Widget>[
-              Text('I am Text', style: textStyle),
-              Icon(
-                Icons.android,
-                size: 50,
-                color: Colors.red,
-              ),
-              CloseButton(),
-              BackButton(),
-              Chip(
-                avatar: Icon(Icons.people),
-                label: Text('Flutter布局开发'),
-              ),
-              Divider(
-                height: 10, //容器高度
-                indent: 10, //左侧间距
-                color: Colors.orange,
-              ),
-              Card(
-                color: Colors.blue,
-                elevation: 5,
-                margin: EdgeInsets.all(10),
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'I am Card',
-                    style: textStyle,
+          bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.home,
+                      color: Colors.grey,
+                    ),
+                    activeIcon: Icon(Icons.home, color: Colors.blue),
+                    title: Text('首页')),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.list,
+                      color: Colors.grey,
+                    ),
+                    activeIcon: Icon(Icons.list, color: Colors.blue),
+                    title: Text('列表'))
+              ]),
+          floatingActionButton: FloatingActionButton(
+            onPressed: null,
+            child: Text('点我'),
+          ),
+          body: _currentIndex == 0
+              ? RefreshIndicator(
+                  child: ListView(
+                    children: <Widget>[
+                      Container(
+                          decoration: BoxDecoration(color: Colors.white),
+                          alignment: Alignment.center,
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  ClipOval(
+                                    child: SizedBox(
+                                      width: 100,
+                                      height: 100,
+                                      child: Image.network(
+                                        'http://www.devio.org/img/avatar.png',
+                                        width: 100,
+                                        height: 100,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: ClipRRect(
+                                      //圆角
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      child: Opacity(
+                                        opacity: 0.6,
+                                        child: Image.network(
+                                          'http://www.devio.org/img/avatar.png',
+                                          width: 100,
+                                          height: 100,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              TextField(
+                                //输入文本的样式
+                                decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                    hintText: '请输入：',
+                                    hintStyle: TextStyle(fontSize: 15)),
+                              ),
+                              Container(
+                                height: 100,
+                                margin: EdgeInsets.all(10),
+                                child: PhysicalModel(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(6),
+                                  clipBehavior: Clip.antiAlias, //抗锯齿
+                                  child: PageView(
+                                    children: <Widget>[
+                                      _item('Page1', Colors.deepPurple),
+                                      _item('Page2', Colors.green),
+                                      _item('Page3', Colors.red),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
+                    ],
                   ),
-                ),
-              ),
-              AlertDialog(
-                title: Text('测试'),
-                content: Text('测试弹框'),
-              )
-            ]),
-          )),
+                  onRefresh: _handleRefresh)
+              : Text('列表')),
     );
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  Future<Null> _handleRefresh() async {
+    await Future.delayed(Duration(microseconds: 200));
+    return null;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+  _item(title, Color color) {
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(color: color),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 22, color: Colors.white),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-              style: TextStyle(color: ColorUtil.color('#a9ee00')),
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

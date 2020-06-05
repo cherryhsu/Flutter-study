@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertest1/pluginUse.dart';
 
+import 'layout_page.dart';
 import 'less_group_page.dart';
 import 'statefull_group_page.dart';
 
 void main() {
-  runApp(StateFullLessGroup());
+  runApp(LayoutPage());
 }
 
 class MyApp extends StatelessWidget {
