@@ -114,13 +114,64 @@ class _LayoutPage extends State<LayoutPage> {
                                     ],
                                   ),
                                 ),
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  FractionallySizedBox(
+                                    widthFactor: 1,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.greenAccent),
+                                      child: Text('宽度撑满'),
+                                    ),
+                                  )
+                                ],
                               )
                             ],
                           )),
+                      Stack(
+                        //重叠
+                        children: <Widget>[
+                          Image.network(
+                            'http://www.devio.org/img/avatar.png',
+                            width: 100,
+                            height: 100,
+                          ),
+                          Positioned(
+                              left: 0,
+                              bottom: 0,
+                              child: Image.network(
+                                'http://www.devio.org/img/avatar.png',
+                                width: 36,
+                                height: 36,
+                              ))
+                        ],
+                      ),
+                      Wrap(
+                        //创建一个wrap布局，从左向右排列，会自动换行
+                        spacing: 8, //水平边距
+                        runSpacing: 10, //垂直间距
+                        children: <Widget>[
+                          _chip('Flutter'),
+                          _chip('进阶'),
+                          _chip('实战'),
+                          _chip('携程'),
+                          _chip('App')
+                        ],
+                      )
                     ],
                   ),
                   onRefresh: _handleRefresh)
-              : Text('列表')),
+              : Column(
+                  children: <Widget>[
+                    Text('列表'),
+                    Expanded(
+                        child: Container(
+                      decoration: BoxDecoration(color: Colors.red),
+                      child: Text('拉伸填满高度'),
+                    ))
+                  ],
+                )),
     );
   }
 
@@ -139,4 +190,17 @@ class _LayoutPage extends State<LayoutPage> {
       ),
     );
   }
+}
+
+_chip(String label) {
+  return Chip(
+    label: Text(label),
+    avatar: CircleAvatar(
+      backgroundColor: Colors.blue.shade900,
+      child: Text(
+        label.substring(0, 1),
+        style: TextStyle(fontSize: 10),
+      ),
+    ),
+  );
 }
