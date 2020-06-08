@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_color_plugin/flutter_color_plugin.dart';
 
 ///StatefulWidget与基础组价
-class StateFullLessGroup extends StatefulWidget {
+class StateFullGroup extends StatefulWidget {
   @override
-  _StateFullLessGroupState createState() => _StateFullLessGroupState();
+  _StateFullGroupState createState() => _StateFullGroupState();
 }
 
-class _StateFullLessGroupState extends State<StateFullLessGroup> {
+class _StateFullGroupState extends State<StateFullGroup> {
   int _currentIndex = 0;
 
   @override
@@ -23,6 +23,13 @@ class _StateFullLessGroupState extends State<StateFullLessGroup> {
       home: Scaffold(
           appBar: AppBar(
             title: Text('StatefulWidget与基础组价'),
+            leading: GestureDetector(
+              onTap: () {
+                //跳出
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back),
+            ),
           ),
           bottomNavigationBar: BottomNavigationBar(
               currentIndex: _currentIndex,
