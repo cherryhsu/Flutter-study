@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertest1/pluginUse.dart';
+import 'package:fluttertest1/res_page.dart';
 
 import 'gesture.dart';
 import 'layout_page.dart';
 import 'less_group_page.dart';
 import 'statefull_group_page.dart';
+import 'widget_lifecycle.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,6 +34,8 @@ class MyApp extends StatelessWidget {
           'ful': (BuildContext context) => StateFullGroup(),
           'layout': (BuildContext context) => LayoutPage(),
           'gesture': (BuildContext context) => GesturePage(),
+          'res': (BuildContext context) => ResPage(),
+          'lifecycle': (BuildContext context) => WidgetLifecycle(),
         });
   }
 }
@@ -62,6 +66,8 @@ class _RouteNavigatorState extends State<RouteNavigator> {
           _item('如何进行Flutter布局开发', LayoutPage(), 'layout'),
           _item('如何使用Flutter包和插件', PluginUse(), 'plugin'),
           _item('如何检测用户手势及处理点击事件', GesturePage(), 'gesture'),
+          _item('如何导入和使用Flutter的资源文件', ResPage(), 'res'),
+          _item('Flutter页面生命周期', WidgetLifecycle(), 'lifecycle'),
         ],
       ),
     );
