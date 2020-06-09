@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertest1/pluginUse.dart';
 import 'package:fluttertest1/res_page.dart';
 
+import 'app_lifecycle.dart';
 import 'gesture.dart';
 import 'layout_page.dart';
 import 'less_group_page.dart';
@@ -9,16 +10,23 @@ import 'statefull_group_page.dart';
 import 'widget_lifecycle.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(DynamicTheme());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class DynamicTheme extends StatefulWidget {
+  @override
+  _DynamicThemeState createState() => _DynamicThemeState();
+}
+
+class _DynamicThemeState extends State<DynamicTheme> {
+  Brightness _brightness = Brightness.light;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
+          brightness: _brightness, //夜间模式
           primarySwatch: Colors.blue,
         ),
         home: Scaffold(
@@ -26,7 +34,23 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             title: Text('如何创建和使用Flutter的路由与导航？'),
           ),
-          body: RouteNavigator(),
+          body: Column(
+            children: <Widget>[
+              RaisedButton(
+                onPressed: () {
+                  setState(() {
+                    if (_brightness == Brightness.dark) {
+                      _brightness = Brightness.light;
+                    } else {
+                      _brightness = Brightness.dark;
+                    }
+                  });
+                },
+                child: Text('切换主题'),
+              ),
+              RouteNavigator()
+            ],
+          ),
         ),
         routes: <String, WidgetBuilder>{
           'plugin': (BuildContext context) => PluginUse(),
@@ -36,7 +60,15 @@ class MyApp extends StatelessWidget {
           'gesture': (BuildContext context) => GesturePage(),
           'res': (BuildContext context) => ResPage(),
           'lifecycle': (BuildContext context) => WidgetLifecycle(),
+          'applifecycle': (BuildContext context) => AppLifecycle(),
         });
+  }
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
 
@@ -68,6 +100,7 @@ class _RouteNavigatorState extends State<RouteNavigator> {
           _item('如何检测用户手势及处理点击事件', GesturePage(), 'gesture'),
           _item('如何导入和使用Flutter的资源文件', ResPage(), 'res'),
           _item('Flutter页面生命周期', WidgetLifecycle(), 'lifecycle'),
+          _item('Flutter应用生命周期', AppLifecycle(), 'applifecycle'),
         ],
       ),
     );
